@@ -1,19 +1,19 @@
 export {}
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.action === "toggleMouse") {
+  if (message.action === "pickElement") {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       chrome.tabs.sendMessage(tabs[0].id, {
-        action: "toggleMouse",
+        action: "pickElement",
         value: message.value
       })
     })
   }
 
-  if (message.action === "changeBackground") {
+  if (message.action === "changeGradient") {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       chrome.tabs.sendMessage(tabs[0].id, {
-        action: "changeBackground",
+        action: "changeGradient",
         value: message.value
       })
     })

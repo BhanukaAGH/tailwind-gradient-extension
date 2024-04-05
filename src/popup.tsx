@@ -4,8 +4,7 @@ import { useEffect, useState } from "react"
 import { Button } from "~components/ui/button"
 import { ScrollArea } from "~components/ui/scroll-area"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~components/ui/tabs"
-import { colors } from "~constants/colors"
-import { shadows } from "~constants/shadows"
+import { gradients } from "~constants/gradients"
 import { cn } from "~lib/utils"
 
 import "~style.css"
@@ -13,9 +12,9 @@ import "~style.css"
 const IndexPopup = () => {
   const [pickElement, setPickElement] = useState(false)
 
-  const changeBackground = (color: string) => {
+  const changeGradient = (color: string) => {
     chrome.runtime.sendMessage({
-      action: "changeBackground",
+      action: "changeGradient",
       value: color
     })
   }
@@ -23,7 +22,7 @@ const IndexPopup = () => {
   useEffect(() => {
     if (pickElement) {
       chrome.runtime.sendMessage({
-        action: "toggleMouse",
+        action: "pickElement",
         value: pickElement
       })
     }
@@ -34,7 +33,7 @@ const IndexPopup = () => {
       <div className="flex items-center justify-between p-4 py-3 border-b">
         <div className="flex items-center space-x-2">
           <div className="w-6 h-6 rounded-full bg-neutral-900" />
-          <div className="text-sm font-semibold">Tailwind Background</div>
+          <div className="text-sm font-semibold">Tailwind Gradient</div>
         </div>
 
         <Button
@@ -47,45 +46,32 @@ const IndexPopup = () => {
       </div>
 
       <div className="flex-1 grid gap-4 p-4">
-        <Tabs defaultValue="background">
+        <Tabs defaultValue="gradients">
           <TabsList className="w-full">
-            <TabsTrigger value="background" className="w-full">
-              Background
+            <TabsTrigger value="gradients" className="w-full">
+              Gradients
             </TabsTrigger>
-            <TabsTrigger value="boxshadow" className="w-full">
-              Box Shadow
+            <TabsTrigger value="generator" className="w-full">
+              Generator
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="background" className="pt-1">
+          <TabsContent value="gradients" className="pt-1">
             <ScrollArea className="h-[460px] overflow-auto">
               <div className="grid grid-cols-2 gap-4">
-                {colors.map((color, i) => (
+                {gradients.map((color, i) => (
                   <div
                     key={i}
                     className={cn("aspect-video w-full rounded-md", color)}
-                    onClick={() => changeBackground(color)}
+                    onClick={() => changeGradient(color)}
                   />
                 ))}
               </div>
             </ScrollArea>
           </TabsContent>
-          <TabsContent value="boxshadow">
-            <ScrollArea className="h-[460px]">
-              <div className="grid gap-20 p-14">
-                {shadows.map((shadow, i) => (
-                  <div key={i} className="relative">
-                    <div
-                      className={cn(
-                        "absolute -inset-2 rounded-lg opacity-50 blur-2xl",
-                        shadow
-                      )}></div>
-                    <div className="relative w-full aspect-[16/6] rounded-lg bg-white flex items-center justify-center">
-                      Content
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </ScrollArea>
+          <TabsContent value="generator">
+            {/* <ScrollArea className="h-[460px]"> */}
+            <div className="grid gap-20 p-14"></div>
+            {/* </ScrollArea> */}
           </TabsContent>
         </Tabs>
       </div>

@@ -5,20 +5,11 @@ export const config: PlasmoCSConfig = {
 }
 
 let isPickElement = false
-let selectElement = null
+export let selectElement: HTMLElement | null = null
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.action === "toggleMouse") {
+  if (message.action === "pickElement") {
     isPickElement = message.value
-  }
-
-  if (message.action === "changeBackground") {
-    if (selectElement != null) {
-      const background = message.value
-      selectElement.style.background = background
-        .substring(4, background.length - 1)
-        .replaceAll("_", " ")
-    }
   }
 })
 

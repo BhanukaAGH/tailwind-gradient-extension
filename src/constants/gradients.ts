@@ -1,4 +1,4 @@
-export const colors = [
+export const gradients = [
   "bg-[linear-gradient(220.55deg,_#A531DC_0%,_#4300B1_100%)]",
   "bg-[linear-gradient(220.55deg,_#FF896D_0%,_#D02020_100%)]",
   "bg-[linear-gradient(220.55deg,_#3793FF_0%,_#0017E4_100%)]",

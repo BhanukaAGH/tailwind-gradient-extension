@@ -1,23 +1,27 @@
 import { SquareMousePointer } from "lucide-react"
 import { useEffect, useState } from "react"
 
+import GeneratorTab from "~components/tabs/generator-tab"
+import GradientTab from "~components/tabs/gradient-tab"
 import { Button } from "~components/ui/button"
-import { ScrollArea } from "~components/ui/scroll-area"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~components/ui/tabs"
-import { gradients } from "~constants/gradients"
-import { cn } from "~lib/utils"
+import { fromColors, toColors, viaColors } from "~constants/colors"
+import { stopPositions } from "~constants/position"
 
 import "~style.css"
 
+const generateRandom = (array: any[] | readonly {}[]) => {
+  return array[Math.floor(Math.random() * array.length)]
+}
+
 const IndexPopup = () => {
   const [pickElement, setPickElement] = useState(false)
-
-  const changeGradient = (color: string) => {
-    chrome.runtime.sendMessage({
-      action: "changeGradient",
-      value: color
-    })
-  }
+  const [stopPosition, setStopPosition] = useState(
+    generateRandom(stopPositions).value
+  )
+  const [fromColor, setFromColor] = useState(generateRandom(fromColors))
+  const [viaColor, setViaColor] = useState(generateRandom(viaColors))
+  const [toColor, setToColor] = useState(generateRandom(toColors))
 
   useEffect(() => {
     if (pickElement) {
@@ -56,22 +60,19 @@ const IndexPopup = () => {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="gradients" className="pt-1">
-            <ScrollArea className="h-[460px] overflow-auto">
-              <div className="grid grid-cols-2 gap-4">
-                {gradients.map((color, i) => (
-                  <div
-                    key={i}
-                    className={cn("aspect-video w-full rounded-md", color)}
-                    onClick={() => changeGradient(color)}
-                  />
-                ))}
-              </div>
-            </ScrollArea>
+            <GradientTab />
           </TabsContent>
-          <TabsContent value="generator">
-            {/* <ScrollArea className="h-[460px]"> */}
-            <div className="grid gap-20 p-14"></div>
-            {/* </ScrollArea> */}
+          <TabsContent value="generator" className="pt-1">
+            <GeneratorTab
+              stopPosition={stopPosition}
+              fromColor={fromColor}
+              viaColor={viaColor}
+              toColor={toColor}
+              setStopPosition={setStopPosition}
+              setFromColor={setFromColor}
+              setViaColor={setViaColor}
+              setToColor={setToColor}
+            />
           </TabsContent>
         </Tabs>
       </div>

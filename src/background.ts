@@ -18,4 +18,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       })
     })
   }
+
+  if (message.action === "changeCustomGradient") {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      chrome.tabs.sendMessage(tabs[0].id, {
+        action: "changeCustomGradient",
+        value: message.value
+      })
+    })
+  }
 })

@@ -1,5 +1,6 @@
 import type { Dispatch, SetStateAction } from "react"
 
+import { Button } from "~components/ui/button"
 import {
   Select,
   SelectContent,
@@ -32,6 +33,13 @@ const GeneratorTab = ({
   setViaColor,
   setToColor
 }: GeneratorTabProps) => {
+  const changeCustomGradient = (gradient: string) => {
+    chrome.runtime.sendMessage({
+      action: "changeCustomGradient",
+      value: gradient
+    })
+  }
+
   return (
     <div className="grid gap-3">
       <Select value={stopPosition} onValueChange={setStopPosition}>
@@ -92,6 +100,20 @@ const GeneratorTab = ({
           `${stopPosition} ${fromColor} ${viaColor} ${toColor}`
         )}
       />
+
+      <div className="flex items-center space-x-3 justify-center">
+        <Button
+          size="xs"
+          onClick={() =>
+            changeCustomGradient(
+              `${stopPosition} ${fromColor} ${viaColor} ${toColor}`
+            )
+          }>
+          preview
+        </Button>
+        <Button size="xs">copy code</Button>
+        <Button size="xs">random</Button>
+      </div>
     </div>
   )
 }

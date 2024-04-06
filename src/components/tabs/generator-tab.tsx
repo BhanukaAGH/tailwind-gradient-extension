@@ -1,4 +1,5 @@
 import type { Dispatch, SetStateAction } from "react"
+import { CopyToClipboard } from "react-copy-to-clipboard"
 
 import { Button } from "~components/ui/button"
 import {
@@ -21,6 +22,7 @@ interface GeneratorTabProps {
   setFromColor: Dispatch<SetStateAction<string>>
   setViaColor: Dispatch<SetStateAction<string>>
   setToColor: Dispatch<SetStateAction<string>>
+  randomizeGradient: () => void
 }
 
 const GeneratorTab = ({
@@ -31,7 +33,8 @@ const GeneratorTab = ({
   setStopPosition,
   setFromColor,
   setViaColor,
-  setToColor
+  setToColor,
+  randomizeGradient
 }: GeneratorTabProps) => {
   const changeCustomGradient = (gradient: string) => {
     chrome.runtime.sendMessage({
@@ -62,7 +65,10 @@ const GeneratorTab = ({
         <SelectContent className="h-56">
           {fromColors.map((from) => (
             <SelectItem key={from} value={from}>
-              {from}
+              <div className="flex items-center gap-x-2">
+                <div className={`h-4 w-4 ${from.replaceAll("from", "bg")}`} />
+                <p>{from}</p>
+              </div>
             </SelectItem>
           ))}
         </SelectContent>
@@ -75,7 +81,10 @@ const GeneratorTab = ({
         <SelectContent className="h-56">
           {viaColors.map((via) => (
             <SelectItem key={via} value={via}>
-              {via}
+              <div className="flex items-center gap-x-2">
+                <div className={`h-4 w-4 ${via.replaceAll("via", "bg")}`} />
+                <p>{via}</p>
+              </div>
             </SelectItem>
           ))}
         </SelectContent>
@@ -88,7 +97,10 @@ const GeneratorTab = ({
         <SelectContent className="h-56">
           {toColors.map((to) => (
             <SelectItem key={to} value={to}>
-              {to}
+              <div className="flex items-center gap-x-2">
+                <div className={`h-4 w-4 ${to.replaceAll("to", "bg")}`} />
+                <p>{to}</p>
+              </div>
             </SelectItem>
           ))}
         </SelectContent>
@@ -111,8 +123,13 @@ const GeneratorTab = ({
           }>
           preview
         </Button>
-        <Button size="xs">copy code</Button>
-        <Button size="xs">random</Button>
+        <CopyToClipboard
+          text={`${stopPosition} ${fromColor} ${viaColor} ${toColor}`}>
+          <Button size="xs">copy code</Button>
+        </CopyToClipboard>
+        <Button size="xs" onClick={randomizeGradient}>
+          random
+        </Button>
       </div>
     </div>
   )

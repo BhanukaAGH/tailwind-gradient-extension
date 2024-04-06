@@ -1,4 +1,4 @@
-import { SquareMousePointer } from "lucide-react"
+import { SquareDashedMousePointer } from "lucide-react"
 import { useEffect, useState } from "react"
 
 import GeneratorTab from "~components/tabs/generator-tab"
@@ -23,6 +23,13 @@ const IndexPopup = () => {
   const [viaColor, setViaColor] = useState(generateRandom(viaColors))
   const [toColor, setToColor] = useState(generateRandom(toColors))
 
+  const randomizeGradient = () => {
+    setStopPosition(generateRandom(stopPositions).value)
+    setFromColor(generateRandom(fromColors))
+    setViaColor(generateRandom(viaColors))
+    setToColor(generateRandom(toColors))
+  }
+
   useEffect(() => {
     if (pickElement) {
       chrome.runtime.sendMessage({
@@ -33,11 +40,13 @@ const IndexPopup = () => {
   }, [pickElement])
 
   return (
-    <div className="flex flex-col w-[400px] h-[600px] border-t overflow-hidden">
+    <div className="flex flex-col w-[400px] h-[600px] border-t overflow-hidden font-sans">
       <div className="flex items-center justify-between p-4 py-3 border-b">
         <div className="flex items-center space-x-2">
           <div className="w-6 h-6 rounded-full bg-neutral-900" />
-          <div className="text-sm font-semibold">Tailwind Gradient</div>
+          <div className="text-sm font-semibold font-clash-display">
+            Tailwind Gradient
+          </div>
         </div>
 
         <Button
@@ -45,7 +54,7 @@ const IndexPopup = () => {
           className="p-0 aspect-square"
           variant="outline"
           onClick={() => setPickElement((prevState) => !prevState)}>
-          <SquareMousePointer size={24} />
+          <SquareDashedMousePointer size={24} />
         </Button>
       </div>
 
@@ -72,6 +81,7 @@ const IndexPopup = () => {
               setFromColor={setFromColor}
               setViaColor={setViaColor}
               setToColor={setToColor}
+              randomizeGradient={randomizeGradient}
             />
           </TabsContent>
         </Tabs>

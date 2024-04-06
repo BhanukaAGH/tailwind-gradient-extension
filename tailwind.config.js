@@ -1,3 +1,5 @@
+import defaultTheme from "tailwindcss/defaultTheme"
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
@@ -7,7 +9,11 @@ module.exports = {
     { pattern: /bg-gradient-to-.+/ },
     { pattern: /from-.+/ },
     { pattern: /via-.+/ },
-    { pattern: /to-.+/ }
+    { pattern: /to-.+/ },
+    {
+      pattern:
+        /bg-(slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-.+/
+    }
   ],
   theme: {
     container: {
@@ -18,6 +24,10 @@ module.exports = {
       }
     },
     extend: {
+      fontFamily: {
+        sans: ["Roboto", ...defaultTheme.fontFamily.sans],
+        "clash-display": ["Clash Display", ...defaultTheme.fontFamily.sans]
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

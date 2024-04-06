@@ -1,4 +1,4 @@
-import { CodeXml, Eye, MousePointerClick } from "lucide-react"
+import { CodeXml, MousePointerClick } from "lucide-react"
 import React from "react"
 import CopyToClipboard from "react-copy-to-clipboard"
 
@@ -9,9 +9,11 @@ import { cn } from "~lib/utils"
 
 const GradientTab = () => {
   const changeGradient = (color: string) => {
-    chrome.runtime.sendMessage({
-      action: "changeGradient",
-      value: color
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      chrome.tabs.sendMessage(tabs[0].id, {
+        action: "changeGradient",
+        value: color
+      })
     })
   }
 

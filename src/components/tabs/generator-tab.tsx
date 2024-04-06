@@ -37,9 +37,11 @@ const GeneratorTab = ({
   randomizeGradient
 }: GeneratorTabProps) => {
   const changeCustomGradient = (gradient: string) => {
-    chrome.runtime.sendMessage({
-      action: "changeCustomGradient",
-      value: gradient
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      chrome.tabs.sendMessage(tabs[0].id, {
+        action: "changeCustomGradient",
+        value: gradient
+      })
     })
   }
 

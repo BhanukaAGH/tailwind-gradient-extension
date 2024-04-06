@@ -1,3 +1,4 @@
+import logo from "data-base64:assets/icon.png"
 import { SquareDashedMousePointer } from "lucide-react"
 import { useEffect, useState } from "react"
 
@@ -31,19 +32,19 @@ const IndexPopup = () => {
   }
 
   useEffect(() => {
-    if (pickElement) {
-      chrome.runtime.sendMessage({
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      chrome.tabs.sendMessage(tabs[0].id, {
         action: "pickElement",
         value: pickElement
       })
-    }
+    })
   }, [pickElement])
 
   return (
     <div className="flex flex-col w-[400px] h-[600px] border-t overflow-hidden font-sans">
       <div className="flex items-center justify-between p-4 py-3 border-b">
         <div className="flex items-center space-x-2">
-          <div className="w-6 h-6 rounded-full bg-neutral-900" />
+          <img src={logo} alt="tailwind gradient logo" className="w-8 h-8" />
           <div className="text-sm font-semibold font-clash-display">
             Tailwind Gradient
           </div>

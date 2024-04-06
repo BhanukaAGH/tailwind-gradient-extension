@@ -3,7 +3,7 @@ import colors from "tailwindcss/colors"
 
 import { stopPositions } from "~constants/position"
 
-import { selectElement } from "./plasmo-pickElement"
+import { selectElement } from "./pick-element"
 
 export const config: PlasmoCSConfig = {
   matches: ["<all_urls>"]

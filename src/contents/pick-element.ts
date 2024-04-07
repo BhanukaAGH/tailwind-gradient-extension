@@ -15,31 +15,31 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 document.addEventListener("mousemove", (event) => {
   if (isPickElement) {
+    event.stopPropagation()
     const element = event.target as HTMLElement
+    element.style.border = "2px solid red"
 
-    if (element.tagName.toLowerCase() === "div") {
-      element.style.border = "2px solid red"
-
-      element.addEventListener(
-        "mouseout",
-        () => {
-          if (selectElement !== element) {
-            element.style.border = ""
-          }
-        },
-        { once: true }
-      )
-
-      if (!element.dataset.hasClickListener) {
-        element.addEventListener("click", () => {
-          if (selectElement != null && selectElement !== element) {
-            selectElement.style.border = ""
-            element.dataset.hasClickListener = "false"
-          }
-          selectElement = element
-        })
-        element.dataset.hasClickListener = "true"
+    // Remove event listeners on mouseleave
+    element.addEventListener(
+      "mouseout",
+      () => {
+        if (selectElement !== element) {
+          element.style.border = ""
+        }
       }
-    }
+      // { once: true }
+    )
+
+    // Optimize click handling
+    element.addEventListener(
+      "click",
+      () => {
+        if (selectElement) {
+          selectElement.style.border = ""
+        }
+        selectElement = element
+      },
+      { once: true }
+    )
   }
 })
